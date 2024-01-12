@@ -232,6 +232,7 @@ header {
     justify-content: center;
     align-items: center;
     width: 70%;
+    max-width: 800px;
     object-fit: cover;
     margin: 30px 0;
 }
@@ -255,6 +256,7 @@ body {
     padding: 50px;
     display: flex;
     justify-content: center;
+    max-width: 1200px;
 }
 
 .startButtonContainer {
@@ -355,10 +357,9 @@ body {
 
 .chooseThisPokemon,
 .goBack {
-    width: 30%;
+    width: 20%;
     font-size: 2rem;
-    max-width: 200px;
-    min-width: 165px;
+    min-width: 180px;
     margin: 0 10px;
 }
 
@@ -409,6 +410,7 @@ body {
     border-radius: 30px;
     background-color: palegoldenrod;
     padding: 50px;
+    max-width: 1200px;
 }
 
 .playerBattlePokemon {
@@ -470,7 +472,6 @@ body {
     align-items: center;
     justify-content: space-around;
     flex-basis: 40%;
-    margin-bottom: 20px;
     row-gap: 10px;
 }
 
@@ -504,7 +505,7 @@ a {
 
 @media screen and (max-width: 992px) {
     html {
-        font-size: 10px;
+        font-size: 8px;
     }
 
     .sprite {
@@ -521,20 +522,37 @@ a {
         flex-basis: 80%;
     }
 
+    .chooseThisPokemon,
+    .goBack {
+        min-width: 150px;
+    }
+
     .battleContainer {
         flex-direction: column;
         justify-content: center;
+        align-items: center;
+    }
+
+    .battleTextContainer {
+        width: calc(100% - 60px);
+        min-height: 80px;
     }
 
 }
 
 @media screen and (max-width: 768px) {
     html {
-        font-size: 8px;
+        font-size: 7px;
     }
 
     .sprite {
         width: 80px;
+    }
+
+
+    .chooseThisPokemon,
+    .goBack {
+        min-width: 130px;
     }
 
     .detailedSprite,
@@ -543,11 +561,9 @@ a {
         height: 250px;
     }
 
-    .chooseThisPokemon,
-    .goBack {
-        min-width: 150px;
+    .battleTextContainer {
+        min-height: 60px;
     }
-
 
 }
 
@@ -571,9 +587,12 @@ a {
     }
 
     .chooseThisPokemon,
-    .backToMain {
-        min-width: 100px;
+    .goBack {
+        min-width: 110px;
     }
 
+    .battleTextContainer {
+        min-height: 40px;
+    }
 
 }
