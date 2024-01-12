@@ -586,13 +586,29 @@ a {
         height: 230px;
     }
 
+    .detailedPokemonInfo {
+        padding: 20px;
+    }
+
     .chooseThisPokemon,
     .goBack {
         min-width: 110px;
     }
 
+    .battleScreen {
+        padding: 20px;
+    }
+
     .battleTextContainer {
         min-height: 40px;
+        min-width: 220px;
+    }
+
+    .attack,
+    .spAtk,
+    .defend,
+    .run {
+        min-width: 100px;
     }
 
 }
