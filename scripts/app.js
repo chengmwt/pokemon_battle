@@ -34,7 +34,7 @@ app.actor = "" // this determines if player or computer goes first based on sele
 
 // -------------------------------------- Display start screen while getPokemon runs --------------------------------
 
-app.startScreen = function() { // initial screen to present the rules of the game
+app.startScreen = () => { // initial screen to present the rules of the game
 
     app.$startScreen.html(`
     
@@ -61,9 +61,9 @@ app.startScreen = function() { // initial screen to present the rules of the gam
 }
 
 
-app.startButtonListener = function() { // event listener for the start button
+app.startButtonListener = () => { // event listener for the start button
 
-    $(".startButton").unbind().on("click", function() {
+    $(".startButton").unbind().on("click", () => {
         app.$startScreen.hide() // once clicked, start screen will be hidden...
         app.displayPokemonList() // and displayPokemonList will be called
     })
@@ -74,9 +74,9 @@ app.startButtonListener = function() { // event listener for the start button
 // ---------------------- Get the data from pokeapi.co for all of the gen 1 pokemon -----------------------------------
 
 
-app.getPokemon = function() { // this uses AJAX to get the first 151 pokemon from the pokeapi website
+app.getPokemon = () => { // this uses AJAX to get the first 151 pokemon from the pokeapi website
 
-    const individualPokemonDataPromises = Array.from(Array(151).keys()).map(function(index) { // create an array of 151 elements
+    const individualPokemonDataPromises = Array.from(Array(151).keys()).map((index) => { // create an array of 151 elements
 
         return $.ajax({
             url: `https://pokeapi.co/api/v2/pokemon/${index + 1}`,
@@ -86,7 +86,7 @@ app.getPokemon = function() { // this uses AJAX to get the first 151 pokemon fro
 
     })
 
-    Promise.all(individualPokemonDataPromises).then(function(pokemonData) { // wait for all promises to resolve
+    Promise.all(individualPokemonDataPromises).then((pokemonData) => { // wait for all promises to resolve
 
         app.pokemonArray = pokemonData // store the array from the api into the local pokemonArray
         app.pokemonArray.sort((a, b) => parseInt(a.id) - parseInt(b.id)) // sort the Pokemon list in order of their id
@@ -99,11 +99,11 @@ app.getPokemon = function() { // this uses AJAX to get the first 151 pokemon fro
 
 // ---------------------------------------- Display all gen 1 pokemon on the main page -----------------------------------
 
-app.displayPokemonList = function() { // function to display the Pokemon list
+app.displayPokemonList = () => { // function to display the Pokemon list
 
     app.$results.addClass("pokemonList") // adding the class for Pokemon list
 
-    app.pokemonArray.forEach(function(pokemon) { // for each pokemon in the array, display their front_default sprite
+    app.pokemonArray.forEach((pokemon) => { // for each pokemon in the array, display their front_default sprite
 
         let pokemonList = `
             <div class="pokemonButton">
@@ -112,9 +112,9 @@ app.displayPokemonList = function() { // function to display the Pokemon list
                 </button>
             </div>
             `
-            app.$results.append(pokemonList) // append the template to the page
+        app.$results.append(pokemonList) // append the template to the page
     })
-    
+
     app.$selectPokemonButton = $(".selectPokemonButton") // const for all the select Pokemon buttons
 
     app.selectPokemonListener() // start the event listener for all select Pokemon buttons
@@ -126,10 +126,10 @@ app.displayPokemonList = function() { // function to display the Pokemon list
 
 // -------------------------------------- Listener for pokemon selection button ----------------------------------------------
 
-app.selectPokemonListener = function() { // event listener to listen for the Pokemon that is selected
+app.selectPokemonListener = () => { // event listener to listen for the Pokemon that is selected
 
 
-    app.$selectPokemonButton.on("click", function(pokemonId) { // on click, select the id matching the name of the pokemon that was passed from app.pokemonList
+    app.$selectPokemonButton.on("click", (pokemonId) => { // on click, select the id matching the name of the pokemon that was passed from app.pokemonList
 
         app.$results.removeClass("pokemonList") // remove the pokemonList class
         app.$results.empty() // clear the page
@@ -137,7 +137,7 @@ app.selectPokemonListener = function() { // event listener to listen for the Pok
         app.displayPokemonData(pokemonId.target.id - 1) // pass the arguments to app.pokemonData
 
     })
-    
+
 }
 
 
@@ -146,32 +146,33 @@ app.selectPokemonListener = function() { // event listener to listen for the Pok
 // ------------------------------------ Display the selected pokemon's detailed stats ----------------------------------
 
 
-app.displayPokemonData = function(id) { // display detailed info of the selected Pokemon
+app.displayPokemonData = (id) => { // display detailed info of the selected Pokemon
 
     app.$results.addClass("detailedPokemonInfo") // add class for the detailed info page
 
     app.selectedPokemon.weaknessArray = [] // clear the arrays at the beginning for when a new Pokemon is selected
     app.selectedPokemon.strengthArray = []
-    
+
     $.ajax({ // AJAX call to get the weakness and strength of the selected pokemon
         url: app.pokemonArray[id].types[0].type.url,
         method: "GET",
         dataType: "json"
-    }).then(function(types){
-        types.damage_relations.double_damage_from.forEach(function(weakness) { // for each item in the array...
+    }).then((types) => {
+        types.damage_relations.double_damage_from.forEach((weakness) => { // for each item in the array...
 
             app.selectedPokemon.weaknessArray.push(weakness.name) // push into the weaknessArray
 
         });
-        types.damage_relations.half_damage_from.forEach(function(strength){ // repeat for strength array
+        types.damage_relations.half_damage_from.forEach((strength) => { // repeat for strength array
             app.selectedPokemon.strengthArray.push(strength.name)
         })
 
-        
-    let pokemonData = // set up template for displaying detailed pokemon data
+        console.log(app.pokemonArray[id])
 
-    // show the pokemon front_default sprite, name, and type
-    `
+        let pokemonData = // set up template for displaying detailed pokemon data
+
+            // show the pokemon front_default sprite, name, and type
+            `
         <div class="pokemonBox">
             
             <div class="pokemonImage">
@@ -179,82 +180,56 @@ app.displayPokemonData = function(id) { // display detailed info of the selected
             </div>
             
             <p class="pokemonName">${app.pokemonArray[id].name}</p>
-            <p class="pokemonType">${app.pokemonArray[id].types[0].type.name}</p>
+            <p class="pokemonType">(${app.pokemonArray[id].types[0].type.name})</p>
         
         </div>
 
-        <div class="statsBox">
-            <button class="statsButton">Stats</button>
-    `
-
-    // for loop to add all elements from the stat array
-
-    for(let i = 0; i < app.pokemonArray[id].stats.length; i++) {
-        pokemonData += `<p class="pokemonStats">${app.pokemonArray[id].stats[i].base_stat} ${app.pokemonArray[id].stats[i].stat.name}</p>`
-    }
+        <div class="stats">
             
-        pokemonData += 
-        `</div>`
-        
-        pokemonData += 
-        `
-        <div class="weakStrongBox">
-            
-            <button class="weakStrongButton">Effectiveness</button>
+            <div>
+                <h2>Stats</h2>
+                <ul class='detailedData'>${app.pokemonArray[id].stats.map((stat) => { return `<li>${stat.stat.name} -- ${stat.base_stat}</li>` }).join('')}</ul>
+            </div>
 
-            <div class = "pokemonWeakStrong">
+
+            <div class="typeBox">
         
                 <div class = "pokemonWeakAgainst">
-                    
-                    <h2>Weak Against</h2>`
-        
-                    // add the weakness array from the AJAX call
+                
+                    <h2>Weak Against</h2>
+                    <ul class='detailedData'>${app.selectedPokemon.weaknessArray.map((weak) => { return `<li>${weak}</li>` }).join('')}</ul>
 
-                    pokemonData += `<p>${app.selectedPokemon.weaknessArray}</p>`                    
-
-        
-                pokemonData += 
-                `</div>`
+                </div>
 
 
-                pokemonData += `
                 <div class = "pokemonStrongAgainst">
                     
-                    <h2>Strong Against</h2>`
-            
-                    // add the strength array from the AJAX call
+                    <h2>Strong Against</h2>
+                    <ul class='detailedData'>${app.selectedPokemon.strengthArray.map((strength) => { return `<li>${strength}</li>` }).join('')}</ul>
 
-                    pokemonData += `<p>${app.selectedPokemon.strengthArray}</p>`
-
-                pokemonData += 
-                `
                 </div>
-                `
-        
-            pokemonData += 
-            `
+            
             </div>
-            `
-    
-        pokemonData += 
-        `
+
         </div>
+        
+        
         <div class = "chooseOrBackContainer">
             <button class="chooseThisPokemon">Choose this Pokemon!</button>
-            <button class="backToMain">Go Back</button>
+            <button class="backToMain goBack">Go Back</button>
         </div>
         </div>
         `
 
 
-    app.$results.append(pokemonData) // append the template to the results
+        app.$results.append(pokemonData) // append the template to the results
 
-    app.detailedStatsButtonsListener() // turn on event listener for the "Stats" and "Effectiveness" buttons
-    app.backToMainButton() // turn on event listener to go back to Pokemon list
-    app.chooseThisPokemonListener(id) // turn on event listener to confirm the selected Pokemon
+        app.detailedStatsButtonsListener() // turn on event listener for the "Stats" and "Effectiveness" buttons
+        app.backToMainButton() // turn on event listener to go back to Pokemon list
+        app.chooseThisPokemonListener(id) // turn on event listener to confirm the selected Pokemon
 
     })
-    
+
 }
 
 
@@ -262,11 +237,11 @@ app.displayPokemonData = function(id) { // display detailed info of the selected
 
 // --------------------------------- Listener for returning to main page button -----------------------------------------
 
-app.backToMainButton = function() { // event listener for return to Pokemon list 
+app.backToMainButton = () => { // event listener for return to Pokemon list 
 
     app.$backToMain = $(".backToMain")
 
-    app.$backToMain.on("click", function() {
+    app.$backToMain.on("click", () => {
 
         app.$results.empty() // clear the results
         app.$results.removeClass("detailedPokemonInfo") // remove detailed pokemon info class
@@ -280,9 +255,9 @@ app.backToMainButton = function() { // event listener for return to Pokemon list
 
 // ----------------------------- Listener for Choose this Pokemon! button --------------------------------------------
 
-app.chooseThisPokemonListener = function(id) { // event listener for confirming the selected Pokemon
+app.chooseThisPokemonListener = (id) => { // event listener for confirming the selected Pokemon
 
-    $(".chooseThisPokemon").on("click", function() {
+    $(".chooseThisPokemon").on("click", () => {
 
         app.$results.removeClass("detailedPokemonInfo") // remove detailed pokemon info class
         app.loadChosenPokemon(id) // call loadChosenPokemon
@@ -294,7 +269,7 @@ app.chooseThisPokemonListener = function(id) { // event listener for confirming 
 
 // ----------------------------------- Load selected Pokemon on arena --------------------------------------------
 
-app.loadChosenPokemon = function(id) { // loads the stats of the player selected pokemon into the selectedPokemon object
+app.loadChosenPokemon = (id) => { // loads the stats of the player selected pokemon into the selectedPokemon object
 
     app.selectedPokemon.name = app.pokemonArray[id].name
     app.selectedPokemon.sprite = app.pokemonArray[id].sprites.back_default
@@ -313,9 +288,9 @@ app.loadChosenPokemon = function(id) { // loads the stats of the player selected
 
 // ----------------------------------- Computer chooses a random pokemon -----------------------------------------
 
-app.loadComputerChosenPokemon = function() { // computer randomly selects a Pokemon and loads the stats into the computerSelectedPokemon object
+app.loadComputerChosenPokemon = () => { // computer randomly selects a Pokemon and loads the stats into the computerSelectedPokemon object
 
-    const computerRandomId = Math.floor(Math.random()*151 + 1) // generate a random nubmer between 1 and 151
+    const computerRandomId = Math.floor(Math.random() * 151 + 1) // generate a random nubmer between 1 and 151
 
     app.computerSelectedPokemon.id = computerRandomId // computer selects random pokemon based on generated id
 
@@ -323,13 +298,13 @@ app.loadComputerChosenPokemon = function() { // computer randomly selects a Poke
         url: app.pokemonArray[app.computerSelectedPokemon.id].types[0].type.url,
         method: "GET",
         dataType: "json"
-    }).then(function(types){
-        types.damage_relations.double_damage_from.forEach(function(weakness) { // for each item in the array...
+    }).then((types) => {
+        types.damage_relations.double_damage_from.forEach((weakness) => { // for each item in the array...
 
             app.computerSelectedPokemon.weaknessArray.push(weakness.name) // push into the weaknessArray
 
         });
-        types.damage_relations.half_damage_from.forEach(function(strength){ // repeat for strength
+        types.damage_relations.half_damage_from.forEach((strength) => { // repeat for strength
             app.computerSelectedPokemon.strengthArray.push(strength.name)
         })
     })
@@ -356,18 +331,18 @@ app.loadComputerChosenPokemon = function() { // computer randomly selects a Poke
 // ------------------------------------ Load player and computer selected pokemon to battle ------------------------
 
 
-app.displayBattleScreen = function() { // start the battle sequence
+app.displayBattleScreen = () => { // start the battle sequence
 
-    app.$results.empty() 
+    app.$results.empty()
     app.$results.removeClass("detailedPokemonInfo")
     app.$results.addClass("battleScreen")
 
     let battleScreen =  // template for the battle screen
 
-    // player selected pokemon back_default sprite, name, and hp will be displayed against the computer's front_default, name, and hp
+        // player selected pokemon back_default sprite, name, and hp will be displayed against the computer's front_default, name, and hp
 
-    // attack, special attack, defend, and run buttons will be displayed
-    `
+        // attack, special attack, defend, and run buttons will be displayed
+        `
     <div class = "playerPokemon">
         <img src = "${app.selectedPokemon.sprite}" alt = "app.selectedPokemon.name" class = "playerBattlePokemon"/>
         <p class = "selectedPokemonHp">HP: <span id = "selectedPokemonHp">${app.selectedPokemon.hp}</span></p>
@@ -388,13 +363,13 @@ app.displayBattleScreen = function() { // start the battle sequence
             <button class = "attack">Attack</button>
             <button class = "spAtk">Sp. Attack</button>
             <button class = "defend">Defend</button>
-            <button class="backToMain" id="run">Run</button>
+            <button class="backToMain run">Run</button>
         </div>
     </div>
 
     `
 
-    
+
 
     app.$results.html(battleScreen)
 
@@ -406,7 +381,7 @@ app.displayBattleScreen = function() { // start the battle sequence
 
 // ----------------------------------------- Calculate initiative -----------------------------------------
 
-app.initiative = function() { // this function will determine if player or computer goes first depending on the respective Pokemon speed stat
+app.initiative = () => { // this function will determine if player or computer goes first depending on the respective Pokemon speed stat
 
     if (app.selectedPokemon.spd > app.computerSelectedPokemon.spd) { // if player's pokemon has higher speed
         app.actor = "player" // player goes first
@@ -416,7 +391,7 @@ app.initiative = function() { // this function will determine if player or compu
         app.actor = "player" // if both pokemon has same speed, let player go first
     }
 
-app.battleOrder()
+    app.battleOrder()
 
 }
 
@@ -424,8 +399,8 @@ app.battleOrder()
 
 // -------------------------------------------- Battle order ------------------------------------------------
 
-app.battleOrder = function() { // set the battle order
-    
+app.battleOrder = () => { // set the battle order
+
     app.$attack = $(".attack") // const for the 3 buttons
     app.$spAtk = $(".spAtk")
     app.$defend = $(".defend")
@@ -433,10 +408,10 @@ app.battleOrder = function() { // set the battle order
     app.$battleButtons = $(".battleButtons")
 
     app.$battleButtons.hide() // hide the buttons after the player has selected one of them
-    app.backToMainButton() 
+    app.backToMainButton()
 
-    
-    if(app.actor === "player") { // player's turn
+
+    if (app.actor === "player") { // player's turn
         app.$battleTextContainer.text(`What will ${app.selectedPokemon.name.toUpperCase()} do?`)
         app.$battleButtons.show() // wait for user input
         app.actingPokemon = app.selectedPokemon // set actor as player's Pokemon
@@ -455,7 +430,7 @@ app.battleOrder = function() { // set the battle order
             setTimeout(() => {
                 app.damageCalculations() // auto-run computer Pokemon's damage calculations
             }, 2000);
-            
+
         }, 2000);
     }
 
@@ -467,9 +442,9 @@ app.battleOrder = function() { // set the battle order
 
 // ------------------------------------- Battle screen button listeners -----------------------------------------
 
-app.battleScreenButtonsListener = function() { // event listener for the buttons on the battle screen
+app.battleScreenButtonsListener = () => { // event listener for the buttons on the battle screen
 
-    app.$attack.unbind().on("click", function() { // attack button
+    app.$attack.unbind().on("click", () => { // attack button
         app.$battleTextContainer.text(`Player's ${app.selectedPokemon.name.toUpperCase()} attacks!`)
         app.dmgModifier = 1 // dmgModifier is to calculate when a player chooses defend, so this will be 1 for attack
         let atkType = 0 // atkType calculates whether the player used attack or special attack
@@ -478,8 +453,8 @@ app.battleScreenButtonsListener = function() { // event listener for the buttons
         }, 2000);
         app.$battleButtons.hide() // hide the buttons while the turn resolves
     })
-    
-    app.$spAtk.unbind().on("click", function() { // special button
+
+    app.$spAtk.unbind().on("click", () => { // special button
         app.$battleTextContainer.text(`Player's ${app.selectedPokemon.name.toUpperCase()} attacks!`)
         app.dmgModifier = 1
         let atkType = 1 // atkType is 1 to differentiate from normal attack
@@ -489,11 +464,11 @@ app.battleScreenButtonsListener = function() { // event listener for the buttons
         app.$battleButtons.hide()
     })
 
-    app.$defend.unbind().on("click", function() { // defend button
+    app.$defend.unbind().on("click", () => { // defend button
         app.$battleTextContainer.text(`Player's ${app.selectedPokemon.name.toUpperCase()} defends!`)
         app.dmgModifier = 0.5 // applies a 0.5 dmgModifier so the damage received by the plaeyr's Pokemon is halved
         app.actor = "computer" // computer goes next
-        setTimeout(function() {
+        setTimeout(() => {
             app.battleOrder()
         }, 2000);
         app.$battleButtons.hide()
@@ -507,7 +482,7 @@ app.battleScreenButtonsListener = function() { // event listener for the buttons
 
 // ----------------------------------------------------- Damage calculations --------------------------------------
 
-app.damageCalculations = function(atkType) { // calculates the damage for the turn, takes the atkType to determine if attack or special attack is selected
+app.damageCalculations = (atkType) => { // calculates the damage for the turn, takes the atkType to determine if attack or special attack is selected
 
     let attack = app.actingPokemon.atk // set attack value to acting Pokemon's attack stat
     let defense = app.nonActingPokemon.def // set defense value to acting Pokemon's defense stat
@@ -522,7 +497,7 @@ app.damageCalculations = function(atkType) { // calculates the damage for the tu
 
         if (app.nonActingPokemon.weaknessArray.includes(app.actingPokemon.type)) { // if the acting pokemon type is included in the non-acting Pokemon's weakness list, then
             effectiveness = 2 // double damage
-        } else if (app.nonActingPokemon.strengthArray.includes(app.actingPokemon.type)){ // if the acting pokemon type is included in the non-acting Pokemon's strength list, then
+        } else if (app.nonActingPokemon.strengthArray.includes(app.actingPokemon.type)) { // if the acting pokemon type is included in the non-acting Pokemon's strength list, then
             effectiveness = 0.5 // half damage
         } else {
             effectiveness = 1 // normal damage
@@ -532,15 +507,15 @@ app.damageCalculations = function(atkType) { // calculates the damage for the tu
 
     let hitChance = Math.round(Math.random() + 0.35) // calculate hit chance biased towards higher hit chance
 
-    const damage = Math.floor((600*(attack/defense)/50) * effectiveness * (Math.random()*38 + 217)/255 * hitChance * app.dmgModifier) // simplified version of gen 1 damage calculation
-    
+    const damage = Math.floor((600 * (attack / defense) / 50) * effectiveness * (Math.random() * 38 + 217) / 255 * hitChance * app.dmgModifier) // simplified version of gen 1 damage calculation
+
 
     app.nonActingPokemon.hp -= damage // subtract from hp
 
     console.log(app.selectedPokemon, app.computerSelectedPokemon, attack, defense, "effect " + effectiveness, "damage " + damage, "hit " + hitChance, "remaining hp " + app.nonActingPokemon.hp, "damage modifier " + app.dmgModifier)
 
 
-    if(app.nonActingPokemon.hp <= 0) { // prevents hp from going below 0 on the page
+    if (app.nonActingPokemon.hp <= 0) { // prevents hp from going below 0 on the page
         app.nonActingPokemon.hp = 0
     }
 
@@ -548,36 +523,36 @@ app.damageCalculations = function(atkType) { // calculates the damage for the tu
     $("#computerSelectedPokemonHp").text(Math.floor(app.computerSelectedPokemon.hp)) // of computer Pokemon
 
 
-    if(hitChance === 0) { // if missed
+    if (hitChance === 0) { // if missed
         app.$battleTextContainer.text(`${app.actingPokemon.name.toUpperCase()} missed`)
-        setTimeout(function() {
+        setTimeout(() => {
             app.battleOrder() // no damage applied and go to next turn
         }, 2000);
     } else {
-        
+
         app.$battleTextContainer.text(`${app.nonActingPokemon.name.toUpperCase()} takes ${damage} damage!`)
 
-        if(effectiveness === 2){ // if super effective
+        if (effectiveness === 2) { // if super effective
             setTimeout(() => {
                 app.$battleTextContainer.text("It's super effective!")
                 setTimeout(() => {
                     app.checkLose() // check if either Pokemon has fainted
                 }, 2000);
             }, 2000);
-            } else if (effectiveness === 0.5) { // if not effective
-                setTimeout(() => {
-                    app.$battleTextContainer.text("It's not very effective...")
-                    setTimeout(() => {
-                        app.checkLose()
-                    }, 2000);
-                }, 2000);
-            } else { // if no type effectiveness
+        } else if (effectiveness === 0.5) { // if not effective
+            setTimeout(() => {
+                app.$battleTextContainer.text("It's not very effective...")
                 setTimeout(() => {
                     app.checkLose()
                 }, 2000);
-            }
-            
-        
+            }, 2000);
+        } else { // if no type effectiveness
+            setTimeout(() => {
+                app.checkLose()
+            }, 2000);
+        }
+
+
     }
 
 }
@@ -587,9 +562,9 @@ app.damageCalculations = function(atkType) { // calculates the damage for the tu
 
 // ----------------------------------------- Check if either pokemon has fainted ------------------------------
 
-app.checkLose = function() { // check if either Pokemon has fainted at the end of each round
+app.checkLose = () => { // check if either Pokemon has fainted at the end of each round
 
-    if(app.selectedPokemon.hp <= 0) { // if plaeyr pokemon fainted
+    if (app.selectedPokemon.hp <= 0) { // if plaeyr pokemon fainted
         app.selectedPokemon.hp = 0
         app.$battleTextContainer.text(`${app.selectedPokemon.name.toUpperCase()} fainted. Player loses.`)
         setTimeout(() => {
@@ -613,8 +588,8 @@ app.checkLose = function() { // check if either Pokemon has fainted at the end o
         }, 4000);
     } else { // if neither pokemon fainted
         app.battleOrder()
-    }    
-    
+    }
+
 }
 
 
@@ -623,13 +598,13 @@ app.checkLose = function() { // check if either Pokemon has fainted at the end o
 
 // -------------------------------------- Buttons for displaying stats and effectiveness ----------------------------
 
-app.detailedStatsButtonsListener = function() { // event listener for the detailed pokemon page
+app.detailedStatsButtonsListener = () => { // event listener for the detailed pokemon page
 
-    $(".statsButton").on("click", function() { // show the pokemon stats
+    $(".statsButton").on("click", () => { // show the pokemon stats
         $(".pokemonStats").toggleClass("flex")
     })
 
-    $(".weakStrongButton").on("click",function() { // show the pokemon effectiveness
+    $(".weakStrongButton").on("click", () => { // show the pokemon effectiveness
         $(".pokemonWeakStrong").toggleClass("flex")
     })
 
@@ -640,12 +615,12 @@ app.detailedStatsButtonsListener = function() { // event listener for the detail
 // ------------------------------------------------- Init ----------------------------------------------------------
 
 
-app.init = function() {
+app.init = () => {
 
     app.$startScreen = $(".startScreen")
     app.$results = $(".results")
     app.$pokemonList = $(".pokemonList")
-    
+
     app.startScreen()
     app.startButtonListener()
     app.getPokemon()
@@ -654,7 +629,7 @@ app.init = function() {
 
 // ------------------------------- Document Ready -----------------------------------------
 
-$("document").ready(function() {
+$("document").ready(() => {
     app.init()
 })
 

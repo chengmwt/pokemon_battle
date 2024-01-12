@@ -1,6 +1,193 @@
-article,aside,edPokemonInfo,figcaption,figure,footer,header,hgroup,nav,section,summary{display:block;}audio,canvas,video{display:inline-block;}audio:not([controls]){display:none;height:0;}[hidden]{display:none;}html{font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}a:focus{outline:thin dotted;}a:active,a:hover{outline:0;}h1{font-size:2em;}abbr[title]{border-bottom:1px dotted;}b,strong{font-weight:700;}dfn{font-style:italic;}mark{background:#ff0;color:#000;}code,kbd,pre,samp{font-family:monospace, serif;font-size:1em;}pre{white-space:pre-wrap;word-wrap:break-word;}q{quotes:01C 01D 018 019;}small{font-size:80%;}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline;}sup{top:-.5em;}sub{bottom:-.25em;}img{border:0;}svg:not(:root){overflow:hidden;}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em;}button,input,select,textarea{font-family:inherit;font-size:100%;margin:0;}button,input{line-height:normal;}button,html input[type=button],/* 1 */input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer;}button[disabled],input[disabled]{cursor:default;}input[type=checkbox],input[type=radio]{box-sizing:border-box;padding:0;}input[type=search]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box;}input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-search-decoration{-webkit-appearance:none;}textarea{overflow:auto;vertical-align:top;}table{border-collapse:collapse;border-spacing:0;}body,figure{margin:0;}legend,button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0;}
+article,
+aside,
+edPokemonInfo,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+nav,
+section,
+summary {
+    display: block;
+}
 
-*, *:before, *:after {box-sizing: inherit;}
+audio,
+canvas,
+video {
+    display: inline-block;
+}
+
+audio:not([controls]) {
+    display: none;
+    height: 0;
+}
+
+[hidden] {
+    display: none;
+}
+
+html {
+    font-family: sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+a:focus {
+    outline: thin dotted;
+}
+
+a:active,
+a:hover {
+    outline: 0;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+abbr[title] {
+    border-bottom: 1px dotted;
+}
+
+b,
+strong {
+    font-weight: 700;
+}
+
+dfn {
+    font-style: italic;
+}
+
+mark {
+    background: #ff0;
+    color: #000;
+}
+
+code,
+kbd,
+pre,
+samp {
+    font-family: monospace, serif;
+    font-size: 1em;
+}
+
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+q {
+    quotes: 01C 01D 018 019;
+}
+
+small {
+    font-size: 80%;
+}
+
+sub,
+sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+sup {
+    top: -.5em;
+}
+
+sub {
+    bottom: -.25em;
+}
+
+img {
+    border: 0;
+}
+
+svg:not(:root) {
+    overflow: hidden;
+}
+
+fieldset {
+    border: 1px solid silver;
+    margin: 0 2px;
+    padding: .35em .625em .75em;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+    font-size: 100%;
+    margin: 0;
+}
+
+button,
+input {
+    line-height: normal;
+}
+
+button,
+html input[type=button],
+/* 1 */
+input[type=reset],
+input[type=submit] {
+    -webkit-appearance: button;
+    cursor: pointer;
+}
+
+button[disabled],
+input[disabled] {
+    cursor: default;
+}
+
+input[type=checkbox],
+input[type=radio] {
+    box-sizing: border-box;
+    padding: 0;
+}
+
+input[type=search] {
+    -webkit-appearance: textfield;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+input[type=search]::-webkit-search-cancel-button,
+input[type=search]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+
+textarea {
+    overflow: auto;
+    vertical-align: top;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+body,
+figure {
+    margin: 0;
+}
+
+legend,
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
 
 html {
     font-size: 62.5%;
@@ -14,6 +201,8 @@ html {
 /* General styles */
 
 .wrapper {
+    display: flex;
+    justify-content: center;
     width: 80%;
     margin: 50px auto 0 auto;
 }
@@ -32,13 +221,19 @@ html {
 
 /* Header styles */
 
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .logo {
     display: flex;
     justify-content: center;
-    height: 200px;
-    width: auto;
+    align-items: center;
+    width: 70%;
     object-fit: cover;
-    margin-bottom: 50px;
+    margin: 30px 0;
 }
 
 
@@ -79,14 +274,15 @@ body {
 
 .sprite {
     width: 100px;
-    height: 100px;
+    height: auto;
 }
 
 
 .pokemonList {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;
 }
 
 
@@ -105,57 +301,86 @@ body {
     border-radius: 30px;
     background-color: palegoldenrod;
     padding: 50px;
+    max-width: 840px;
 }
 
 .pokemonBox {
-    width: 60%;
-    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    flex-basis: 60%;
+    justify-content: center;
     text-align: center;
+    min-width: 300px;
 }
 
-.statsBox,
-.weakStrongBox {
-    width: 20%;
+.detailedData {
+    list-style: none;
+    padding: 0;
+}
+
+.detailedData li {
+    font-size: 2rem;
+    text-transform: capitalize;
+    text-indent: none;
+}
+
+.stats {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-basis: 40%;
     min-width: 250px;
 }
 
+.stats h2 {
+    font-size: 2rem;
+}
+
+.typeBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between
+}
+
+.pokemonWeakAgainst {
+    margin-right: 20px;
+}
+
 .chooseOrBackContainer {
+    display: flex;
     width: 100%;
-    text-align: center;
+    justify-content: center;
     margin-top: 50px;
 }
 
 .chooseThisPokemon,
-.backToMain,
+.goBack {
+    width: 30%;
+    font-size: 2rem;
+    max-width: 200px;
+    min-width: 165px;
+    margin: 0 10px;
+}
+
+
 .attack,
 .spAtk,
-.defend {
+.defend,
+.run {
     width: 40%;
-    min-width: 250px;
+    min-width: 150px;
+    max-width: 300px;
     font-size: 3rem;
 }
 
-.statsButton,
-.weakStrongButton {
-    width: 80%;
-    font-size: 3rem;
-}
 
-.statsBox p,
-.weakStrongBox p, 
-.weakStrongBox h2 {
-    text-transform: capitalize;
-    font-size: 2rem;
-}
-
-.pokemonStats,
-.pokemonWeakStrong {
+.hidden {
     display: none;
 }
 
-.flex {
+/* .flex {
     display: block;
-}
+} */
 
 .detailedSprite {
     width: 300px;
@@ -220,16 +445,15 @@ body {
 
 .battleContainer {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
     justify-content: center;
     flex-grow: 1;
     margin-top: 50px;
 }
 
 .battleTextContainer {
-    display: flex;
-    flex-wrap: wrap;
     flex-grow: 1;
+    flex-basis: 60%;
     border: 5px black solid;
     border-radius: 30px;
     background-color: white;
@@ -237,17 +461,20 @@ body {
     font-size: 3rem;
     padding: 30px;
     margin-bottom: 20px;
+    min-width: 380px;
 }
 
 .battleButtons {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
-    width: 50%;
-    min-width: 400px;
+    justify-content: space-around;
+    flex-basis: 40%;
     margin-bottom: 20px;
+    row-gap: 10px;
 }
+
+
 
 
 
@@ -272,4 +499,81 @@ a {
     font-size: 2rem;
     color: white;
     font-weight: bolder;
+}
+
+
+@media screen and (max-width: 992px) {
+    html {
+        font-size: 10px;
+    }
+
+    .sprite {
+        width: 90px;
+    }
+
+    .detailedSprite,
+    .playerBattlePokemon {
+        width: 270px;
+        height: 270px;
+    }
+
+    .stats {
+        flex-basis: 80%;
+    }
+
+    .battleContainer {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+    html {
+        font-size: 8px;
+    }
+
+    .sprite {
+        width: 80px;
+    }
+
+    .detailedSprite,
+    .playerBattlePokemon {
+        width: 250px;
+        height: 250px;
+    }
+
+    .chooseThisPokemon,
+    .goBack {
+        min-width: 150px;
+    }
+
+
+}
+
+@media screen and (max-width: 576px) {
+    html {
+        font-size: 6px;
+    }
+
+    .logo {
+        margin: 10px 0;
+    }
+
+    .sprite {
+        width: 70px;
+    }
+
+    .detailedSprite,
+    .playerBattlePokemon {
+        width: 230px;
+        height: 230px;
+    }
+
+    .chooseThisPokemon,
+    .backToMain {
+        min-width: 100px;
+    }
+
+
 }
